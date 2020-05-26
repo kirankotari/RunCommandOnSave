@@ -1,5 +1,5 @@
 {
-    "name": "runcommand-on-save",
+    "name": "RunCommandOnSave",
     "displayName": "Run command on Save",
     "description": "Run command on Save..!",
     "version": "0.0.1",
@@ -10,7 +10,7 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:RunCommandOnSave.helloWorld"
+        "*"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -18,7 +18,7 @@
             {
               "title": "Run command on Save",
               "properties": {
-                "kirankotari.RunCommandOnSave": {
+                "RunCommandOnSave": {
                   "type": "array",
                   "description": "Commands to be executed",
                   "items": {
@@ -33,7 +33,10 @@
                 }
               }
             }
+          ],
+          "commands":[
           ]
+
     },
     "scripts": {
         "vscode:prepublish": "yarn run compile",

@@ -2,14 +2,13 @@ import * as vscode from 'vscode';
 import {exec} from 'child_process';
 
 const CHANNEL_NAME = "Run command on Save";
-const EXTENSION_NAME = "kirankotari.RunCommandOnSave";
+const EXTENSION_NAME = "RunCommandOnSave";
 export function activate(context: vscode.ExtensionContext) {
     let extension = new RunCommandOnSave(context);
-
     context.subscriptions.push(
         vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
-            extension.ExecuteCommands(document);
-        }),
+            extension.ExecuteCommands();
+          }),
         vscode.workspace.onDidChangeConfiguration(() => {
             extension.LoadConfig();
         })
@@ -43,20 +42,40 @@ class RunCommandOnSave {
     }
 
     public LoadConfig() {
+        vscode.window.showInformationMessage('typescript2222: '+ vscode.workspace.getConfiguration().get('RunCommandOnSave'));
+        vscode.window.showInformationMessage('RunCommandOnSave config: '+ vscode.workspace.getConfiguration().get(EXTENSION_NAME));
         this.commands = <Array<ICommand>>(
             vscode.workspace.getConfiguration().get(EXTENSION_NAME)
         );
+        // vscode.window.showInformationMessage('I am inside LoadConfig');
+        // vscode.window.showInformationMessage('commands: '+ this.commands);
     }
 
-    private executeCommand(commands: Array<ICommand>, document: vscode.TextDocument) {
+    private executeCommand(commands: Array<ICommand>) {
         if (commands.length === 0){
             this.output.appendLine("Run command on Save - Done.");
             return;
         }
 
-        // Yet to add code
+        let command = commands.shift();
+        exec(command!.cmd).on('exit', this.executeCommand.bind(this, commands));
     }
 
-    public ExecuteCommands(document: vscode.TextDocument) {
+    public ExecuteCommands() {
+        // vscode.window.showInformationMessage('I am inside ExecuteCommands');
+        if (this.commands.length === 0) {
+            // vscode.window.showInformationMessage('commands length is 0');
+            // vscode.window.showInformationMessage(' '+this.commands);
+            return;
+        }
+
+        this.output.appendLine("Running command: "+ this.commands);
+        this.executeCommand(this.commands);
     }
 }
+
+// "kirankotari.RunCommandOnSave": [
+//     {
+//       "cmd": "Run command on Save"
+//     }
+//   ]
