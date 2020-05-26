@@ -2,7 +2,8 @@ import * as vscode from 'vscode';
 import {exec} from 'child_process';
 
 const CHANNEL_NAME = "Run command on Save";
-const EXTENSION_NAME = "RunCommandOnSave";
+const EXTENSION_NAME = "kirankotari.RunCommandOnSave";
+
 export function activate(context: vscode.ExtensionContext) {
     let extension = new RunCommandOnSave(context);
     context.subscriptions.push(
@@ -13,16 +14,8 @@ export function activate(context: vscode.ExtensionContext) {
             extension.LoadConfig();
         })
       );
-
-    console.log('Congratulations, your extension "RunCommandOnSave" is now active!');
-    let disposable = vscode.commands.registerCommand('RunCommandOnSave.helloWorld', () => {
-        vscode.window.showInformationMessage('Hello World from RunCommandOnSave!');
-    });
-
-    context.subscriptions.push(disposable);
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {}
 
 interface ICommand {
@@ -42,13 +35,9 @@ class RunCommandOnSave {
     }
 
     public LoadConfig() {
-        vscode.window.showInformationMessage('typescript2222: '+ vscode.workspace.getConfiguration().get('RunCommandOnSave'));
-        vscode.window.showInformationMessage('RunCommandOnSave config: '+ vscode.workspace.getConfiguration().get(EXTENSION_NAME));
         this.commands = <Array<ICommand>>(
             vscode.workspace.getConfiguration().get(EXTENSION_NAME)
         );
-        // vscode.window.showInformationMessage('I am inside LoadConfig');
-        // vscode.window.showInformationMessage('commands: '+ this.commands);
     }
 
     private executeCommand(commands: Array<ICommand>) {
@@ -62,18 +51,17 @@ class RunCommandOnSave {
     }
 
     public ExecuteCommands() {
-        // vscode.window.showInformationMessage('I am inside ExecuteCommands');
         if (this.commands.length === 0) {
-            // vscode.window.showInformationMessage('commands length is 0');
-            // vscode.window.showInformationMessage(' '+this.commands);
             return;
         }
 
-        this.output.appendLine("Running command: "+ this.commands);
+        this.output.appendLine("Running command: ");
+        this.commands.forEach(element => this.output.appendLine(element.cmd));
         this.executeCommand(this.commands);
     }
 }
 
+// In workspace under settings add the following content..!
 // "kirankotari.RunCommandOnSave": [
 //     {
 //       "cmd": "Run command on Save"

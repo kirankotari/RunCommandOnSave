@@ -18,7 +18,7 @@
             {
               "title": "Run command on Save",
               "properties": {
-                "RunCommandOnSave": {
+                "kirankotari.RunCommandOnSave": {
                   "type": "array",
                   "description": "Commands to be executed",
                   "items": {
@@ -33,10 +33,7 @@
                 }
               }
             }
-          ],
-          "commands":[
           ]
-
     },
     "scripts": {
         "vscode:prepublish": "yarn run compile",
