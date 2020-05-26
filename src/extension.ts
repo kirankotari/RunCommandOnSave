@@ -1,27 +1,62 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import {exec} from 'child_process';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+const CHANNEL_NAME = "Run command on Save";
+const EXTENSION_NAME = "kirankotari.RunCommandOnSave";
 export function activate(context: vscode.ExtensionContext) {
+    let extension = new RunCommandOnSave(context);
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "RunCommandOnSave" is now active!');
+    context.subscriptions.push(
+        vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
+            extension.ExecuteCommands(document);
+        }),
+        vscode.workspace.onDidChangeConfiguration(() => {
+            extension.LoadConfig();
+        })
+      );
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('RunCommandOnSave.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+    console.log('Congratulations, your extension "RunCommandOnSave" is now active!');
+    let disposable = vscode.commands.registerCommand('RunCommandOnSave.helloWorld', () => {
+        vscode.window.showInformationMessage('Hello World from RunCommandOnSave!');
+    });
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from RunCommandOnSave!');
-	});
-
-	context.subscriptions.push(disposable);
+    context.subscriptions.push(disposable);
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
+
+interface ICommand {
+    cmd: string;
+}
+
+class RunCommandOnSave {
+    output: vscode.OutputChannel;
+    context: vscode.ExtensionContext;
+    commands: Array<ICommand>;
+
+    constructor(context: vscode.ExtensionContext) {
+        this.output = vscode.window.createOutputChannel(CHANNEL_NAME);
+        this.context = context;
+        this.commands = [];
+        this.LoadConfig();
+    }
+
+    public LoadConfig() {
+        this.commands = <Array<ICommand>>(
+            vscode.workspace.getConfiguration().get(EXTENSION_NAME)
+        );
+    }
+
+    private executeCommand(commands: Array<ICommand>, document: vscode.TextDocument) {
+        if (commands.length === 0){
+            this.output.appendLine("Run command on Save - Done.");
+            return;
+        }
+
+        // Yet to add code
+    }
+
+    public ExecuteCommands(document: vscode.TextDocument) {
+    }
+}
