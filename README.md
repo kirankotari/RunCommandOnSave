@@ -24,6 +24,10 @@ Open a feature or bug at [RunCommandOnSave](https://github.com/kirankotari/RunCo
 
 ## Release Notes
 
+### 1.0.1
+
+Bug: Command was getting lost, took a backup.
+
 ### 1.0.0
 
 Initial release of RunCommandOnSave
