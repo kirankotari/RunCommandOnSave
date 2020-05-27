@@ -2,7 +2,7 @@
     "name": "RunCommandOnSave",
     "displayName": "Run command on Save",
     "description": "Run command on Save..!",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "publisher": "kirankotari",
     "homepage": "https://github.com/kirankotari/RunCommandOnSave",
     "repository":"https://github.com/kirankotari/RunCommandOnSave",

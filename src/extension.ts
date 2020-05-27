@@ -62,9 +62,8 @@ class RunCommandOnSave {
             this.command_backup = command!.cmd;
         }
 
-        vscode.window.showInformationMessage('backup exec: '+ this.command_backup);
         this.commands = [{'cmd': this.command_backup}];
-        vscode.window.showInformationMessage('exec: '+ this.commands);
+        // vscode.window.showInformationMessage('exec: '+ this.commands);
         this.output.appendLine("Running command: ");
         this.commands.forEach(element => this.output.appendLine(element.cmd));
         this.executeCommand(this.commands);

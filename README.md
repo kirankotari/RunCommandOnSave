@@ -24,6 +24,10 @@ Open a feature or bug at [RunCommandOnSave](https://github.com/kirankotari/RunCo
 
 ## Release Notes
 
+### 1.0.2
+
+Bug: Removing vscode.window.showInformationMessage
+
 ### 1.0.1
 
 Bug: Command was getting lost, took a backup.
